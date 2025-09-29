@@ -1,6 +1,6 @@
-import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { z } from "zod";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -11,6 +11,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Checkbox } from "@/components/ui/checkbox";
 import { useToast } from "@/hooks/use-toast";
 import { Heart, Send } from "lucide-react";
+import { apiRequest } from "@/lib/queryClient";
 
 const rsvpSchema = z.object({
   fullName: z.string().min(2, "Please enter your full name"),
@@ -29,13 +30,9 @@ const rsvpSchema = z.object({
 
 type RSVPFormData = z.infer<typeof rsvpSchema>;
 
-interface RSVPFormProps {
-  onSubmit: (data: RSVPFormData) => Promise<void>;
-}
-
-export default function RSVPForm({ onSubmit }: RSVPFormProps) {
-  const [isSubmitting, setIsSubmitting] = useState(false);
+export default function RSVPForm() {
   const { toast } = useToast();
+  const queryClient = useQueryClient();
 
   const form = useForm<RSVPFormData>({
     resolver: zodResolver(rsvpSchema),
@@ -52,24 +49,34 @@ export default function RSVPForm({ onSubmit }: RSVPFormProps) {
     },
   });
 
-  const handleSubmit = async (data: RSVPFormData) => {
-    setIsSubmitting(true);
-    try {
-      await onSubmit(data);
+  const rsvpMutation = useMutation({
+    mutationFn: async (data: RSVPFormData) => {
+      return apiRequest("/api/rsvp", "POST", data);
+    },
+    onSuccess: (response) => {
       toast({
         title: "RSVP Submitted!",
         description: "Thank you for your response. We can't wait to celebrate with you!",
       });
       form.reset();
-    } catch (error) {
+      // Invalidate RSVP queries if we had any
+      queryClient.invalidateQueries({ queryKey: ["/api/rsvp"] });
+    },
+    onError: (error: any) => {
+      const errorMessage = error?.error === "RSVP already submitted for this email address" 
+        ? "You have already submitted an RSVP with this email address." 
+        : "There was a problem submitting your RSVP. Please try again.";
+      
       toast({
         title: "Error",
-        description: "There was a problem submitting your RSVP. Please try again.",
+        description: errorMessage,
         variant: "destructive",
       });
-    } finally {
-      setIsSubmitting(false);
-    }
+    },
+  });
+
+  const handleSubmit = (data: RSVPFormData) => {
+    rsvpMutation.mutate(data);
   };
 
   return (
@@ -284,10 +291,10 @@ export default function RSVPForm({ onSubmit }: RSVPFormProps) {
                     type="submit" 
                     size="lg" 
                     className="w-full"
-                    disabled={isSubmitting}
+                    disabled={rsvpMutation.isPending}
                     data-testid="button-submit-rsvp"
                   >
-                    {isSubmitting ? (
+                    {rsvpMutation.isPending ? (
                       "Submitting..."
                     ) : (
                       <>

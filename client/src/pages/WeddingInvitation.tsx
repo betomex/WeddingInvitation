@@ -136,11 +136,6 @@ export default function WeddingInvitation() {
     }
   };
 
-  const handleRSVPSubmit = async (data: any) => {
-    console.log('RSVP submitted:', data);
-    // todo: remove mock functionality - replace with actual API call
-    await new Promise(resolve => setTimeout(resolve, 1000));
-  };
 
   // Intersection Observer for section tracking
   useEffect(() => {
@@ -195,7 +190,7 @@ export default function WeddingInvitation() {
         </section>
 
         <section id="rsvp">
-          <RSVPForm onSubmit={handleRSVPSubmit} />
+          <RSVPForm />
         </section>
 
         <section id="info">
