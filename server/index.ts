@@ -10,7 +10,7 @@ app.use(express.json());
 
 app.use(cors({
   origin: [
-    'https://your-domain.vercel.app',
+    'https://wedding-invitation-kappa-livid.vercel.app',
     'http://localhost:5000'
   ],
   credentials: true
