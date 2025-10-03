@@ -1,18 +1,20 @@
 import express, { type Request, Response, NextFunction } from "express";
 import { setupVite, serveStatic, log } from "./vite";
-import cors from "cors";
 import nodemailer from "nodemailer";
 import { createServer } from "http";
 import 'dotenv/config';
-
-const allowedOrigins = [
-  "http://localhost:5000",
-  "https://your-react-app-domain.com",
-  "https://www.your-react-app-domain.com",
-];
+import cors from 'cors';
 
 const app = express();
 app.use(express.json());
+
+app.use(cors({
+  origin: [
+    'https://your-domain.vercel.app',
+    'http://localhost:5000'
+  ],
+  credentials: true
+}));
 
 const transporter = nodemailer.createTransport({
   service: "gmail", 
@@ -24,23 +26,6 @@ const transporter = nodemailer.createTransport({
     pass: process.env.EMAIL_PASS,
   },
 });
-
-app.use(
-  cors({
-    origin: function (origin, callback) {
-      // Разрешаем запросы без origin (например, от мобильных приложений)
-      if (!origin) return callback(null, true);
-
-      if (allowedOrigins.indexOf(origin) === -1) {
-        const msg =
-          "The CORS policy for this site does not allow access from the specified Origin.";
-        return callback(new Error(msg), false);
-      }
-      return callback(null, true);
-    },
-    credentials: true,
-  })
-);
 
 app.post("/send-email", async (req, res) => {
   try {
@@ -84,7 +69,7 @@ const port = process.env.PORT || 5000;
 app.listen(
   {
     port,
-    host: "localhost",
+    host: "0.0.0.0",
   },
   () => {
     log(`serving on port ${port}`);
