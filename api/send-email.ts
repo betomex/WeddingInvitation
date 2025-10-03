@@ -1,20 +1,4 @@
-import express, { type Request, Response, NextFunction } from "express";
-import { setupVite, serveStatic, log } from "./vite";
 import nodemailer from "nodemailer";
-import { createServer } from "http";
-import 'dotenv/config';
-import cors from 'cors';
-
-const app = express();
-app.use(express.json());
-
-app.use(cors({
-  origin: [
-    'https://wedding-invitation-kappa-livid.vercel.app',
-    'http://localhost:5000'
-  ],
-  credentials: true
-}));
 
 const transporter = nodemailer.createTransport({
   service: "gmail", 
@@ -27,7 +11,7 @@ const transporter = nodemailer.createTransport({
   },
 });
 
-app.post("/send-email", async (req, res) => {
+const form = async (req: any, res: any) => {
   try {
     const {
       fullName,
@@ -63,33 +47,6 @@ app.post("/send-email", async (req, res) => {
     console.error("Ошибка отправки:", error);
     res.status(500).json({ success: false, message: "Ошибка отправки письма" });
   }
-});
+};
 
-const port = process.env.PORT || 5000;
-app.listen(
-  {
-    port,
-    host: "0.0.0.0",
-  },
-  () => {
-    log(`serving on port ${port}`);
-  }
-);
-
-(async () => {
-  const httpServer = createServer(app);
-
-  if (app.get("env") === "development") {
-    await setupVite(app, httpServer);
-  } else {
-    await transporter.sendMail({
-      from: `$test <test@example.com>`,
-      to: process.env.EMAIL_USER,
-      subject: `Новое сообщение от tets`,
-      html: `
-        <h3>Сервер</h3>
-      `,
-    });
-    serveStatic(app);
-  }
-})();
+export default form
