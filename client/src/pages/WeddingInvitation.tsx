@@ -136,7 +136,7 @@ export default function WeddingInvitation() {
     },
     {
       src: photo12,
-      caption: "Последний день в Крыму"
+      caption: "Прикол какой-то, но мило))"
     },
     {
       src: photo13,
