@@ -1,0 +1,12 @@
+{
+  "routes": [
+    {
+      "src": "/api/(.*)",
+      "dest": "/api/send-email.ts"
+    },
+    {
+      "src": "/server/(.*)",
+      "dest": "/server/index.ts"
+    }
+  ]
+}

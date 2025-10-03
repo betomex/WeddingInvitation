@@ -93,3 +93,5 @@ app.listen(
     serveStatic(app);
   }
 })();
+
+module.exports = app;

@@ -45,7 +45,7 @@ export default function RSVPForm() {
   const rsvpMutation = useMutation({
     mutationFn: async (data: RSVPFormData) => {
       try {
-        const response = await fetch('/send-email', {
+        const response = await fetch('/api/send-email', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
