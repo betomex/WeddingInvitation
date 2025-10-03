@@ -9,7 +9,7 @@ import GuestInformation from "@/components/GuestInformation";
 import { Heart } from "lucide-react";
 
 // Import images
-// import photo1 from "@assets/generated_images/1.jpg";
+import photo1 from "@assets/generated_images/1.jpg";
 import photo2 from "@assets/generated_images/2.jpg";
 import photo3 from "@assets/generated_images/3.jpg";
 import photo4 from "@assets/generated_images/4.jpg";
@@ -25,8 +25,6 @@ import photo12 from "@assets/generated_images/12.jpg";
 import photo13 from "@assets/generated_images/13.jpg";
 import photo14 from "@assets/generated_images/14.jpg";
 
-import heroBackground from "@assets/generated_images/Romantic_wedding_hero_background_df0e6883.png";
-
 export default function WeddingInvitation() {
   const [activeSection, setActiveSection] = useState('hero');
 
@@ -36,7 +34,7 @@ export default function WeddingInvitation() {
       date: "Апрель 2023",
       title: "Первая встреча",
       description: "...была подстроена друзьями-сводниками или была чистой случайностью? Сходили в Funky bar (ночной клуб), выпили, потанцевали - да и в целом хорошо провели время",
-      image: heroBackground
+      image: photo1
     },
     {
       date: "Сентябрь 2023", 
