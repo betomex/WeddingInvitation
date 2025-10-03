@@ -9,11 +9,22 @@ import GuestInformation from "@/components/GuestInformation";
 import { Heart } from "lucide-react";
 
 // Import images
-import engagementPhoto from "@assets/generated_images/Romantic_couple_engagement_photo_2d574447.png";
-import formalPhoto from "@assets/generated_images/Elegant_couple_formal_portrait_2cc50f94.png";
-import gardenPhoto from "@assets/generated_images/Couple_walking_garden_photo_c07c8661.png";
-import laughingPhoto from "@assets/generated_images/Joyful_couple_laughing_photo_e4466ae0.png";
-import venuePhoto from "@assets/generated_images/Couple_silhouette_wedding_venue_1cac4d9b.png";
+// import photo1 from "@assets/generated_images/1.jpg";
+import photo2 from "@assets/generated_images/2.jpg";
+import photo3 from "@assets/generated_images/3.jpg";
+import photo4 from "@assets/generated_images/4.jpg";
+import photo5 from "@assets/generated_images/5.jpg";
+import photo6 from "@assets/generated_images/6.jpg";
+import photo7 from "@assets/generated_images/7.jpg";
+import photo8 from "@assets/generated_images/8.jpg";
+
+import photo9 from "@assets/generated_images/9.jpg";
+import photo10 from "@assets/generated_images/10.jpg";
+import photo11 from "@assets/generated_images/11.jpg";
+import photo12 from "@assets/generated_images/12.jpg";
+import photo13 from "@assets/generated_images/13.jpg";
+import photo14 from "@assets/generated_images/14.jpg";
+
 import heroBackground from "@assets/generated_images/Romantic_wedding_hero_background_df0e6883.png";
 
 export default function WeddingInvitation() {
@@ -22,110 +33,118 @@ export default function WeddingInvitation() {
   // todo: remove mock functionality
   const mockStories = [
     {
-      date: "March 2020",
-      title: "First Meeting",
-      description: "We met at a cozy coffee shop downtown during a rainy afternoon. What started as a chance encounter over spilled coffee turned into hours of conversation and instant connection.",
-      image: engagementPhoto
+      date: "Апрель 2023",
+      title: "Первая встреча",
+      description: "...была подстроена друзьями-сводниками или была чистой случайностью? Сходили в Funky bar (ночной клуб), выпили, потанцевали - да и в целом хорошо провели время",
+      image: heroBackground
     },
     {
-      date: "December 2021", 
-      title: "First Trip Together",
-      description: "Our first adventure together took us to the mountains, where we discovered our shared love for hiking and watching sunsets. It was here we knew we had found something special.",
-      image: gardenPhoto
+      date: "Сентябрь 2023", 
+      title: "Вторая встреча",
+      description: "..., которая произошла в гостях у друзей. Ника заглянула к нам аккурат в ночь на свой день рождения, где мы её и поздравили",
+      image: photo2
     },
     {
-      date: "August 2023",
-      title: "The Proposal", 
-      description: "Under the same sunset where we first realized we were meant to be, Alexander got down on one knee and asked Elena to be his forever. Of course, she said yes!",
-      image: formalPhoto
+      date: "Январь 2024",
+      title: "Третья встреча", 
+      description: "..., которая состоялась после нового года и опять же у друзей, где будущего жениха застали врасплох и пригласили на первое свидание. Свидание же состоялось 7го января",
+      image: photo3
     },
     {
-      date: "Today",
-      title: "Our Wedding Day",
-      description: "After years of love, laughter, and building a life together, we're ready to say 'I do' and celebrate with all the people who mean the most to us.",
-      image: laughingPhoto
+      date: "Февраль 2024",
+      title: "Наша первая поездка",
+      description: "... в Гуамку, где смогли хорошо провести время вместе. Буквально ничего не получилось из задуманного. 0% плана и 100% импровизации. Зато получилось под Мезмаем прокатиться на лошадях!",
+      image: photo4
+    },
+    {
+      date: "Август 2024",
+      title: "Лежим дома",
+      description: "... и чудесно проводим время вместе",
+      image: photo5
+    },
+    {
+      date: "Октябрь 2024",
+      title: "Поездка в Домбай",
+      description: "... была глотком свежего горного воздуха и настоящим счастьем. Она подарила нам невероятные пейзажи и уютные вечера",
+      image: photo6
+    },
+    {
+      date: "Январь 2025",
+      title: "Новый год",
+      description: "..., который встрели вместе, в кругу родных и близких людей",
+      image: photo7
+    },
+    {
+      date: "Май 2025",
+      title: "Предложение",
+      description: "... состоялось в мае, в ходе нашей поездки по Крыму. Это было самым важным для нас решением",
+      image: photo8
     }
   ];
 
   const mockEventData = {
     ceremony: {
-      date: "Saturday, June 15th, 2024",
-      time: "4:00 PM",
-      venue: "St. Mary's Cathedral",
-      address: "123 Cathedral Ave, Downtown City, ST 12345",
-      mapUrl: "https://maps.google.com"
+      date: "Суббота, 8 ноября 2025",
+      time: "15:30",
+      venue: "Дворец бракосочетания Екатерининский зал",
+      address: "ул. Офицерская, 47",
+      mapUrl: "https://yandex.ru/profile/128066017990?lang=ru&no-distribution=1&view-state=mini&source=wizbiz_new_map_single"
     },
     reception: {
-      date: "Saturday, June 15th, 2024", 
-      time: "6:00 PM",
-      venue: "Grand Ballroom Hotel",
-      address: "456 Elegant St, Downtown City, ST 12345",
-      mapUrl: "https://maps.google.com"
+      date: "Суббота, 8 ноября 2025", 
+      time: "18:00",
+      venue: "Ресторан \"Champagne\"",
+      address: "ул. 70-летия Октября, 14/1, микрорайон Юбилейный",
+      mapUrl: "https://yandex.ru/profile/219785130779?lang=ru&no-distribution=1&view-state=mini&source=wizbiz_new_map_single"
     },
     schedule: [
       { 
-        time: "3:30 PM", 
-        event: "Guest Arrival", 
-        description: "Please arrive early for the ceremony seating" 
+        time: "15:00", 
+        event: "Прибытие гостей", 
+        description: "Приглашаем вас стать свидетелями нашей свадебной церемонии"
       },
       { 
-        time: "4:00 PM", 
-        event: "Wedding Ceremony", 
-        description: "Exchange of vows and rings" 
+        time: "15:30", 
+        event: "Церемония", 
+        description: "Приготовьте платочки для самых трогательных моментов" 
       },
       { 
-        time: "4:30 PM", 
-        event: "Cocktail Hour", 
-        description: "Celebrate with drinks and appetizers" 
+        time: "17:30", 
+        event: "Фуршет", 
+        description: "Общение с гостями и праздничный фуршет" 
       },
       { 
-        time: "6:00 PM", 
-        event: "Reception Dinner", 
-        description: "Three-course dinner with live music" 
+        time: "18:00", 
+        event: "Банкет", 
+        description: "Время танцев, веселья, ваших поздравлений и вкусной еды" 
       },
-      { 
-        time: "8:00 PM", 
-        event: "First Dance", 
-        description: "Join us on the dance floor" 
-      },
-      { 
-        time: "9:00 PM", 
-        event: "Dancing & Celebration", 
-        description: "Party the night away until midnight" 
-      }
     ]
   };
 
   const mockPhotos = [
     {
-      src: engagementPhoto,
-      alt: "Engagement photo",
-      caption: "The moment everything changed - our engagement day"
+      src: photo9,
+      caption: "Очень рад прогулке по парку"
     },
     {
-      src: formalPhoto,
-      alt: "Formal couple portrait",
-      caption: "Dressed up for our engagement party"
+      src: photo10,
+      caption: "Ревнуем"
     },
     {
-      src: gardenPhoto,
-      alt: "Couple walking in garden",
-      caption: "A peaceful walk in our favorite park"
+      src: photo11,
+      caption: "Илья + Ника"
     },
     {
-      src: laughingPhoto,
-      alt: "Couple laughing together",
-      caption: "Laughter is the soundtrack to our love"
+      src: photo12,
+      caption: "Последний день в Крыму"
     },
     {
-      src: venuePhoto,
-      alt: "Wedding venue silhouette",
-      caption: "Our beautiful wedding venue at sunset"
+      src: photo13,
+      caption: "Ласточки"
     },
     {
-      src: heroBackground,
-      alt: "Romantic wedding background",
-      caption: "The perfect romantic setting for our special day"
+      src: photo14,
+      caption: "Отмечаем свадьбу друзей"
     }
   ];
 
@@ -170,9 +189,9 @@ export default function WeddingInvitation() {
       <main>
         <section id="hero">
           <WeddingHero 
-            groomName="Alexander"
-            brideName="Elena" 
-            weddingDate="June 15, 2024"
+            groomName="Илья"
+            brideName="Вероника" 
+            weddingDate="8 ноября, 2025"
             onLearnMore={() => scrollToSection('story')}
           />
         </section>
@@ -202,10 +221,12 @@ export default function WeddingInvitation() {
       <footer className="bg-muted/50 py-12 text-center">
         <div className="container mx-auto px-4">
           <Heart className="w-8 h-8 mx-auto mb-4 text-primary" />
-          <p className="font-script text-2xl mb-2">Elena & Alexander</p>
-          <p className="text-muted-foreground">June 15, 2024</p>
+          <span className="font-script text-2xl mb-2">Вероника</span>
+          <span className="font-serif text-2xl mb-2"> & </span>
+          <span className="font-script text-2xl mb-2">Илья</span>
+          <p className="text-muted-foreground">8 ноября, 2025</p>
           <p className="text-sm text-muted-foreground mt-4">
-            Made with love for our special day
+            Сделано с любовью для нашего особого дня
           </p>
         </div>
       </footer>

@@ -22,9 +22,9 @@ export default function StoryTimeline({ stories }: StoryTimelineProps) {
       <div className="container mx-auto px-4">
         <div className="text-center mb-16">
           <Heart className="w-8 h-8 mx-auto mb-4 text-primary" />
-          <h2 className="font-serif text-4xl md:text-5xl font-bold mb-4">Our Story</h2>
+          <h2 className="font-serif text-4xl md:text-5xl font-bold mb-4">Наша история</h2>
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-            Every love story is beautiful, but ours is our favorite. Here are the moments that led us to this special day.
+            Каждая история любви красива по своему, как и наша. Вот те моменты, которые привели нас к этому особому дню
           </p>
         </div>
         

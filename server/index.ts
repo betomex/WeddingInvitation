@@ -1,71 +1,102 @@
 import express, { type Request, Response, NextFunction } from "express";
-import { registerRoutes } from "./routes";
 import { setupVite, serveStatic, log } from "./vite";
+import cors from "cors";
+import nodemailer from "nodemailer";
+import { createServer } from "http";
+import 'dotenv/config';
+
+const allowedOrigins = [
+  "http://localhost:5000",
+  "https://your-react-app-domain.com",
+  "https://www.your-react-app-domain.com",
+];
 
 const app = express();
 app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
 
-app.use((req, res, next) => {
-  const start = Date.now();
-  const path = req.path;
-  let capturedJsonResponse: Record<string, any> | undefined = undefined;
-
-  const originalResJson = res.json;
-  res.json = function (bodyJson, ...args) {
-    capturedJsonResponse = bodyJson;
-    return originalResJson.apply(res, [bodyJson, ...args]);
-  };
-
-  res.on("finish", () => {
-    const duration = Date.now() - start;
-    if (path.startsWith("/api")) {
-      let logLine = `${req.method} ${path} ${res.statusCode} in ${duration}ms`;
-      if (capturedJsonResponse) {
-        logLine += ` :: ${JSON.stringify(capturedJsonResponse)}`;
-      }
-
-      if (logLine.length > 80) {
-        logLine = logLine.slice(0, 79) + "…";
-      }
-
-      log(logLine);
-    }
-  });
-
-  next();
+const transporter = nodemailer.createTransport({
+  service: "gmail", 
+  host: "smtp.gmail.com",
+  port: 587,
+  secure: false,
+  auth: { 
+    user: process.env.EMAIL_USER,
+    pass: process.env.EMAIL_PASS,
+  },
 });
 
+app.use(
+  cors({
+    origin: function (origin, callback) {
+      // Разрешаем запросы без origin (например, от мобильных приложений)
+      if (!origin) return callback(null, true);
+
+      if (allowedOrigins.indexOf(origin) === -1) {
+        const msg =
+          "The CORS policy for this site does not allow access from the specified Origin.";
+        return callback(new Error(msg), false);
+      }
+      return callback(null, true);
+    },
+    credentials: true,
+  })
+);
+
+app.post("/send-email", async (req, res) => {
+  try {
+    const {
+      fullName,
+      guestCount,
+      attendingCeremony,
+      attendingReception,
+      specialRequests,
+      message,
+    } = req.body;
+
+    const mailOptions = {
+      from: `${fullName} <test@example.com>`,
+      to: process.env.EMAIL_USER,
+      subject: `Новое сообщение от ${fullName}`,
+      html: `
+        <h3>Новое сообщение с сайта</h3>
+        <p><strong>Имя:</strong> ${fullName}</p>
+        <p><strong>Количество гостей:</strong> ${guestCount}</p>
+        <p><strong>Буду ли на церемонии:</strong> ${attendingCeremony}</p>
+        <p><strong>Буду ли на банкете:</strong> ${attendingReception}</p>
+        <p><strong>Сцепзапросы:</strong> ${specialRequests}</p>
+        <p><strong>Сообщение:</strong></p>
+        <p>${message}</p>
+      `,
+    };
+
+    await transporter.sendMail(mailOptions);
+
+    res
+      .status(200)
+      .json({ success: true, message: "Письмо отправлено!", data: req.body });
+  } catch (error) {
+    console.error("Ошибка отправки:", error);
+    res.status(500).json({ success: false, message: "Ошибка отправки письма" });
+  }
+});
+
+const port = process.env.PORT || 5000;
+app.listen(
+  {
+    port,
+    host: "localhost",
+  },
+  () => {
+    log(`serving on port ${port}`);
+  }
+);
+
 (async () => {
-  const server = await registerRoutes(app);
+  const httpServer = createServer(app);
 
-  app.use((err: any, _req: Request, res: Response, _next: NextFunction) => {
-    const status = err.status || err.statusCode || 500;
-    const message = err.message || "Internal Server Error";
-
-    res.status(status).json({ message });
-    throw err;
-  });
-
-  // importantly only setup vite in development and after
-  // setting up all the other routes so the catch-all route
-  // doesn't interfere with the other routes
   if (app.get("env") === "development") {
-    await setupVite(app, server);
+    await setupVite(app, httpServer);
   } else {
     serveStatic(app);
   }
-
-  // ALWAYS serve the app on the port specified in the environment variable PORT
-  // Other ports are firewalled. Default to 5000 if not specified.
-  // this serves both the API and the client.
-  // It is the only port that is not firewalled.
-  const port = parseInt(process.env.PORT || '5000', 10);
-  server.listen({
-    port,
-    host: "0.0.0.0",
-    reusePort: true,
-  }, () => {
-    log(`serving on port ${port}`);
-  });
 })();

@@ -2,7 +2,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { z } from "zod";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
@@ -11,20 +11,16 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Checkbox } from "@/components/ui/checkbox";
 import { useToast } from "@/hooks/use-toast";
 import { Heart, Send } from "lucide-react";
-import { apiRequest } from "@/lib/queryClient";
 
 const rsvpSchema = z.object({
-  fullName: z.string().min(2, "Please enter your full name"),
-  email: z.string().email("Please enter a valid email address"),
-  phone: z.string().optional(),
-  guestCount: z.string().min(1, "Please select number of guests"),
+  fullName: z.string().min(2, "Пожалуйста, введите своё имя и фамилию"),
+  guestCount: z.string().min(1, "Пожалуйста, выберите количество гостей"),
   attendingCeremony: z.boolean(),
   attendingReception: z.boolean(),
-  dietaryRestrictions: z.string().optional(),
   specialRequests: z.string().optional(),
   message: z.string().optional(),
 }).refine(data => data.attendingCeremony || data.attendingReception, {
-  message: "Please select at least one event to attend",
+  message: "Пожалуйста, выберите хотя бы одно мероприятие",
   path: ["attendingCeremony"]
 });
 
@@ -38,12 +34,9 @@ export default function RSVPForm() {
     resolver: zodResolver(rsvpSchema),
     defaultValues: {
       fullName: "",
-      email: "",
-      phone: "",
       guestCount: "",
       attendingCeremony: true,
       attendingReception: true,
-      dietaryRestrictions: "",
       specialRequests: "",
       message: "",
     },
@@ -51,24 +44,37 @@ export default function RSVPForm() {
 
   const rsvpMutation = useMutation({
     mutationFn: async (data: RSVPFormData) => {
-      return apiRequest("/api/rsvp", "POST", data);
+      try {
+        const response = await fetch('http://localhost:5000/send-email', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(data),
+        });
+
+        const result = await response.json();
+      } catch (error) {
+        console.error('Ошибка:', error);
+      }
     },
     onSuccess: (response) => {
       toast({
-        title: "RSVP Submitted!",
-        description: "Thank you for your response. We can't wait to celebrate with you!",
+        title: "Отправлено!",
+        description: "Спасибо за ответ. До встречи!",
       });
-      form.reset();
+      // form.reset();
       // Invalidate RSVP queries if we had any
       queryClient.invalidateQueries({ queryKey: ["/api/rsvp"] });
     },
     onError: (error: any) => {
-      const errorMessage = error?.error === "RSVP already submitted for this email address" 
-        ? "You have already submitted an RSVP with this email address." 
-        : "There was a problem submitting your RSVP. Please try again.";
-      
+      console.log(error)
+      const errorMessage = error?.error === "RSVP already submitted for this email address"
+        ? "Вы уже отправляли ответ с данного устройства."
+        : "Возникла проблема при отправке данных. Пожалуйста, сообщите нам об этом.";
+
       toast({
-        title: "Error",
+        title: "Ошибка((",
         description: errorMessage,
         variant: "destructive",
       });
@@ -84,52 +90,30 @@ export default function RSVPForm() {
       <div className="container mx-auto px-4">
         <div className="text-center mb-16">
           <Heart className="w-8 h-8 mx-auto mb-4 text-primary" />
-          <h2 className="font-serif text-4xl md:text-5xl font-bold mb-4">RSVP</h2>
+          <h2 className="font-serif text-4xl md:text-5xl font-bold mb-4">Анкета гостя</h2>
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-            Please let us know if you'll be joining us for our special day. We can't wait to celebrate with you!
+            Пожалуйста, дайте нам знать собираетесь ли вы присоединиться к мероприятию
           </p>
         </div>
 
         <div className="max-w-2xl mx-auto">
           <Card>
-            <CardHeader>
-              <CardTitle className="font-serif text-2xl text-center">Please Respond by May 1st, 2024</CardTitle>
-            </CardHeader>
             <CardContent>
               <Form {...form}>
                 <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-6">
                   {/* Name and Contact */}
-                  <div className="grid md:grid-cols-2 gap-4">
+                  <div className="grid md:grid-cols-2 gap-4 pt-6">
                     <FormField
                       control={form.control}
                       name="fullName"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel>Full Name *</FormLabel>
+                          <FormLabel>Имя и фамилия *</FormLabel>
                           <FormControl>
-                            <Input 
-                              placeholder="Your full name" 
-                              {...field} 
-                              data-testid="input-full-name"
-                            />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-                    
-                    <FormField
-                      control={form.control}
-                      name="email"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>Email Address *</FormLabel>
-                          <FormControl>
-                            <Input 
-                              type="email" 
-                              placeholder="your@email.com" 
+                            <Input
+                              placeholder="Введите своё имя и фамилию"
                               {...field}
-                              data-testid="input-email"
+                              data-testid="input-full-name"
                             />
                           </FormControl>
                           <FormMessage />
@@ -141,39 +125,21 @@ export default function RSVPForm() {
                   <div className="grid md:grid-cols-2 gap-4">
                     <FormField
                       control={form.control}
-                      name="phone"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>Phone Number</FormLabel>
-                          <FormControl>
-                            <Input 
-                              placeholder="(555) 123-4567" 
-                              {...field}
-                              data-testid="input-phone"
-                            />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-
-                    <FormField
-                      control={form.control}
                       name="guestCount"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel>Number of Guests *</FormLabel>
+                          <FormLabel>Количество гостей *</FormLabel>
                           <Select onValueChange={field.onChange} defaultValue={field.value}>
                             <FormControl>
                               <SelectTrigger data-testid="select-guest-count">
-                                <SelectValue placeholder="Select guest count" />
+                                <SelectValue placeholder="Выберите количество гостей" />
                               </SelectTrigger>
                             </FormControl>
                             <SelectContent>
-                              <SelectItem value="1">Just me</SelectItem>
-                              <SelectItem value="2">Me + 1 guest</SelectItem>
-                              <SelectItem value="3">Me + 2 guests</SelectItem>
-                              <SelectItem value="4">Me + 3 guests</SelectItem>
+                              <SelectItem value="1">Я один</SelectItem>
+                              <SelectItem value="2">Я и +1 гость</SelectItem>
+                              <SelectItem value="3">Я и +2 гостя</SelectItem>
+                              <SelectItem value="4">Я и +3 гостя</SelectItem>
                             </SelectContent>
                           </Select>
                           <FormMessage />
@@ -184,8 +150,8 @@ export default function RSVPForm() {
 
                   {/* Event Attendance */}
                   <div className="space-y-4">
-                    <FormLabel className="text-base font-medium">Which events will you attend? *</FormLabel>
-                    
+                    <FormLabel className="text-base font-medium">Какие мероприятия собираетесь посетить? *</FormLabel>
+
                     <div className="space-y-3">
                       <FormField
                         control={form.control}
@@ -200,12 +166,12 @@ export default function RSVPForm() {
                               />
                             </FormControl>
                             <div className="space-y-1 leading-none">
-                              <FormLabel>Wedding Ceremony (4:00 PM)</FormLabel>
+                              <FormLabel>Свадебная церемония (15:30)</FormLabel>
                             </div>
                           </FormItem>
                         )}
                       />
-                      
+
                       <FormField
                         control={form.control}
                         name="attendingReception"
@@ -219,7 +185,7 @@ export default function RSVPForm() {
                               />
                             </FormControl>
                             <div className="space-y-1 leading-none">
-                              <FormLabel>Reception Dinner & Dancing (6:00 PM)</FormLabel>
+                              <FormLabel>Банкет (18:00)</FormLabel>
                             </div>
                           </FormItem>
                         )}
@@ -228,35 +194,16 @@ export default function RSVPForm() {
                     <FormMessage />
                   </div>
 
-                  {/* Dietary Restrictions */}
-                  <FormField
-                    control={form.control}
-                    name="dietaryRestrictions"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Dietary Restrictions or Allergies</FormLabel>
-                        <FormControl>
-                          <Input 
-                            placeholder="Vegetarian, gluten-free, allergies, etc." 
-                            {...field}
-                            data-testid="input-dietary"
-                          />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-
                   {/* Special Requests */}
                   <FormField
                     control={form.control}
                     name="specialRequests"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>Special Accommodations</FormLabel>
+                        <FormLabel>Предпочтения из напитков</FormLabel>
                         <FormControl>
-                          <Input 
-                            placeholder="Wheelchair access, seating preferences, etc." 
+                          <Input
+                            placeholder="Шампанское, коньяк, виски..."
                             {...field}
                             data-testid="input-special-requests"
                           />
@@ -272,10 +219,10 @@ export default function RSVPForm() {
                     name="message"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>Message for the Couple</FormLabel>
+                        <FormLabel>Сообщение для нас</FormLabel>
                         <FormControl>
-                          <Textarea 
-                            placeholder="Share your well wishes or favorite memory with us..."
+                          <Textarea
+                            placeholder="Можете оставить здесь свои пожелания или просто что-то написать..."
                             className="min-h-[100px]"
                             {...field}
                             data-testid="textarea-message"
@@ -287,19 +234,19 @@ export default function RSVPForm() {
                   />
 
                   {/* Submit Button */}
-                  <Button 
-                    type="submit" 
-                    size="lg" 
+                  <Button
+                    type="submit"
+                    size="lg"
                     className="w-full"
                     disabled={rsvpMutation.isPending}
                     data-testid="button-submit-rsvp"
                   >
                     {rsvpMutation.isPending ? (
-                      "Submitting..."
+                      "Отправка..."
                     ) : (
                       <>
                         <Send className="w-5 h-5 mr-2" />
-                        Send RSVP
+                        Отправить
                       </>
                     )}
                   </Button>

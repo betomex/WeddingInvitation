@@ -26,23 +26,22 @@ export default function WeddingHero({ groomName, brideName, weddingDate, onLearn
         
         <h1 className="font-serif text-5xl md:text-7xl font-bold mb-4">
           <span className="block">{brideName}</span>
-          <span className="font-script text-3xl md:text-4xl my-2 block">&</span>
+          <span className="text-3xl md:text-4xl mt-3 block">&</span>
           <span className="block">{groomName}</span>
         </h1>
         
         <div className="mb-8">
-          <p className="font-script text-2xl md:text-3xl mb-2">are getting married!</p>
           <p className="text-lg md:text-xl font-light">{weddingDate}</p>
         </div>
-        
+
         <Button 
-          size="lg" 
-          className="bg-white/90 text-black hover:bg-white backdrop-blur-sm text-lg px-8 py-3"
-          onClick={onLearnMore}
-          data-testid="button-learn-more"
-        >
-          Learn More
-        </Button>
+           size="xl" 
+           className="text-white text-lg px-8 py-3"
+           data-testid="button-learn-more"
+           onClick={onLearnMore}
+         >
+           Узнать больше
+         </Button>
       </div>
       
       {/* Scroll Indicator */}

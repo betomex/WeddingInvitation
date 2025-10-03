@@ -26,10 +26,10 @@ interface EventDetailsProps {
 
 export default function EventDetails({ ceremony, reception, schedule }: EventDetailsProps) {
   const addToCalendar = () => {
-    const startDate = new Date('2024-06-15T16:00:00');
-    const endDate = new Date('2024-06-15T23:00:00');
-    const title = 'Elena & Alexander Wedding';
-    const details = 'Wedding ceremony and reception celebration';
+    const startDate = new Date('2025-11-08T15:00:00');
+    const endDate = new Date('2025-11-08T23:00:00');
+    const title = 'Свадьба Вероники и Ильи';
+    const details = 'Свадебная церемония и банкет';
     const location = ceremony.address;
     
     const googleCalendarUrl = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(title)}&dates=${startDate.toISOString().replace(/[-:]/g, '').split('.')[0]}Z/${endDate.toISOString().replace(/[-:]/g, '').split('.')[0]}Z&details=${encodeURIComponent(details)}&location=${encodeURIComponent(location)}`;
@@ -41,9 +41,9 @@ export default function EventDetails({ ceremony, reception, schedule }: EventDet
     <section className="py-24 bg-muted/30">
       <div className="container mx-auto px-4">
         <div className="text-center mb-16">
-          <h2 className="font-serif text-4xl md:text-5xl font-bold mb-4">Event Details</h2>
+          <h2 className="font-serif text-4xl md:text-5xl font-bold mb-4">Детали события</h2>
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-            All the important information you need to celebrate with us on our special day.
+            Вся важная информация, которая вам понадобится чтобы отпраздновать с нами
           </p>
         </div>
 
@@ -51,9 +51,9 @@ export default function EventDetails({ ceremony, reception, schedule }: EventDet
           {/* Ceremony */}
           <Card className="hover-elevate">
             <CardHeader>
-              <CardTitle className="font-serif text-2xl flex items-center gap-2">
+              <CardTitle className="font-serif text-2xl flex items-center gap-2 text-center">
                 <Calendar className="w-6 h-6 text-primary" />
-                Ceremony
+                Свадебная церемония
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
@@ -81,7 +81,7 @@ export default function EventDetails({ ceremony, reception, schedule }: EventDet
                 data-testid="button-ceremony-map"
               >
                 <ExternalLink className="w-4 h-4 mr-2" />
-                View on Map
+                Как добраться
               </Button>
             </CardContent>
           </Card>
@@ -91,7 +91,7 @@ export default function EventDetails({ ceremony, reception, schedule }: EventDet
             <CardHeader>
               <CardTitle className="font-serif text-2xl flex items-center gap-2">
                 <Calendar className="w-6 h-6 text-primary" />
-                Reception
+                Банкет
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
@@ -119,7 +119,7 @@ export default function EventDetails({ ceremony, reception, schedule }: EventDet
                 data-testid="button-reception-map"
               >
                 <ExternalLink className="w-4 h-4 mr-2" />
-                View on Map
+                Как добраться
               </Button>
             </CardContent>
           </Card>
@@ -128,7 +128,7 @@ export default function EventDetails({ ceremony, reception, schedule }: EventDet
         {/* Schedule */}
         <Card className="mb-8">
           <CardHeader>
-            <CardTitle className="font-serif text-2xl text-center">Wedding Day Schedule</CardTitle>
+            <CardTitle className="font-serif text-2xl text-center">Свадебное расписание</CardTitle>
           </CardHeader>
           <CardContent>
             <div className="space-y-4">
@@ -157,7 +157,7 @@ export default function EventDetails({ ceremony, reception, schedule }: EventDet
             data-testid="button-add-calendar"
           >
             <Calendar className="w-5 h-5 mr-2" />
-            Add to Calendar
+            Добавить в календарь
           </Button>
         </div>
       </div>

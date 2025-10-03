@@ -29,11 +29,11 @@ export default function Navigation({ onSectionClick }: NavigationProps) {
   };
 
   const navigationItems = [
-    { id: 'story', label: 'Our Story' },
-    { id: 'details', label: 'Details' },
-    { id: 'gallery', label: 'Gallery' },
-    { id: 'rsvp', label: 'RSVP' },
-    { id: 'info', label: 'Info' },
+    { id: 'story', label: 'Наша история' },
+    { id: 'details', label: 'Детали' },
+    { id: 'gallery', label: 'Галерея' },
+    { id: 'rsvp', label: 'Подтвердить участие' },
+    { id: 'info', label: 'Информация' },
   ];
 
   return (
@@ -54,7 +54,13 @@ export default function Navigation({ onSectionClick }: NavigationProps) {
           >
             <Heart className={`w-6 h-6 ${isScrolled ? 'text-primary' : 'text-white'}`} />
             <span className={`font-script text-2xl ${isScrolled ? 'text-foreground' : 'text-white'}`}>
-              E & A
+              В
+            </span>
+            <span className={` text-2xl ${isScrolled ? 'text-foreground' : 'text-white'}`}>
+              &
+            </span>
+            <span className={`font-script text-2xl ${isScrolled ? 'text-foreground' : 'text-white'}`}>
+              И
             </span>
           </div>
 

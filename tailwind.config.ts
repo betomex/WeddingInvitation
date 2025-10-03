@@ -52,13 +52,6 @@ export default {
           border: "var(--destructive-border)",
         },
         ring: "hsl(var(--ring) / <alpha-value>)",
-        chart: {
-          "1": "hsl(var(--chart-1) / <alpha-value>)",
-          "2": "hsl(var(--chart-2) / <alpha-value>)",
-          "3": "hsl(var(--chart-3) / <alpha-value>)",
-          "4": "hsl(var(--chart-4) / <alpha-value>)",
-          "5": "hsl(var(--chart-5) / <alpha-value>)",
-        },
         sidebar: {
           ring: "hsl(var(--sidebar-ring) / <alpha-value>)",
           DEFAULT: "hsl(var(--sidebar) / <alpha-value>)",
@@ -87,20 +80,6 @@ export default {
         serif: ["Playfair Display", "var(--font-serif)"],
         mono: ["var(--font-mono)"],
         script: ["Dancing Script", "cursive"],
-      },
-      keyframes: {
-        "accordion-down": {
-          from: { height: "0" },
-          to: { height: "var(--radix-accordion-content-height)" },
-        },
-        "accordion-up": {
-          from: { height: "var(--radix-accordion-content-height)" },
-          to: { height: "0" },
-        },
-      },
-      animation: {
-        "accordion-down": "accordion-down 0.2s ease-out",
-        "accordion-up": "accordion-up 0.2s ease-out",
       },
     },
   },

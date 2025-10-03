@@ -7,7 +7,6 @@ import { ChevronLeft, ChevronRight, X, Camera } from "lucide-react";
 interface WeddingGalleryProps {
   photos: Array<{
     src: string;
-    alt: string;
     caption?: string;
   }>;
 }
@@ -40,9 +39,9 @@ export default function WeddingGallery({ photos }: WeddingGalleryProps) {
       <div className="container mx-auto px-4">
         <div className="text-center mb-16">
           <Camera className="w-8 h-8 mx-auto mb-4 text-primary" />
-          <h2 className="font-serif text-4xl md:text-5xl font-bold mb-4">Our Gallery</h2>
+          <h2 className="font-serif text-4xl md:text-5xl font-bold mb-4">Наша галерея</h2>
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-            Capturing the beautiful moments of our journey together. Click any photo to view it in full size.
+            Запечатлейте красивые моменты нашего приключения вместе с нами. Нажимайте на фото, чтобы посмотреть в полноэкранном режиме
           </p>
         </div>
 
@@ -58,7 +57,7 @@ export default function WeddingGallery({ photos }: WeddingGalleryProps) {
               <div className="relative aspect-square">
                 <img 
                   src={photo.src} 
-                  alt={photo.alt}
+                  alt={''}
                   className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
                 />
                 <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-all duration-300 flex items-center justify-center">
@@ -121,7 +120,7 @@ export default function WeddingGallery({ photos }: WeddingGalleryProps) {
               <div className="relative">
                 <img 
                   src={photos[selectedPhotoIndex]?.src} 
-                  alt={photos[selectedPhotoIndex]?.alt}
+                  alt={''}
                   className="w-full max-h-[80vh] object-contain rounded-lg"
                 />
                 
@@ -135,7 +134,7 @@ export default function WeddingGallery({ photos }: WeddingGalleryProps) {
 
               {/* Photo Counter */}
               <div className="absolute -bottom-12 left-1/2 -translate-x-1/2 bg-black/50 text-white px-4 py-2 rounded-full text-sm">
-                {selectedPhotoIndex + 1} of {photos.length}
+                {selectedPhotoIndex + 1} из {photos.length}
               </div>
             </div>
           </DialogContent>
